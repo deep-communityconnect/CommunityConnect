@@ -1,6 +1,7 @@
 from rest_framework.viewsets import ViewSet
 from rest_framework.response import Response
 from authentication.models import AuthUser
+from users.models import VolunteerProfile
 from .models import OrganizationProfile, Opportunity, Application
 from .serializers import OpportunitySerializer, ApplicationStatusSerializer, OrganizationProfileSerializer
 from rest_framework.decorators import action
@@ -37,18 +38,23 @@ class OrganizerViewSet(ViewSet):
 
     @swagger_auto_schema(
         method='get',
-        operation_summary="View Applications",
-        operation_description="Retrieve all applications received for the organizer's opportunities."
+        operation_summary="View Pending Applications",
+        operation_description="Retrieve all pending applications for the organizer's opportunities."
     )
     @action(detail=False, methods=['get'])
-    def applications(self, request):
+    def pending_applications(self, request):
+
         user = get_user(request)
         if not user or user.role != 'organizer':
             return Response({"error": "Unauthorized"}, status=401)
 
         org = get_object_or_404(OrganizationProfile, user=user)
 
-        apps = Application.objects.filter(opportunity__organization=org)
+        apps = Application.objects.filter(
+            opportunity__organization=org,
+            status='pending'
+        ).order_by('-created_at')
+
         data = [{
             "id": a.id,
             "volunteer": a.volunteer.name,
@@ -154,3 +160,23 @@ class OrganizerViewSet(ViewSet):
         } for app in applications]
 
         return Response(data)
+
+    @swagger_auto_schema(
+        method='get',
+        operation_summary="View Volunteer Profile",
+        operation_description="Retrieve profile details of any volunteer by ID."
+    )
+    @action(detail=True, methods=['get'], url_path='view-volunteer')
+    def view_volunteer(self, request, pk=None):
+        user = get_user(request)
+        if not user or user.role != 'organizer':
+            return Response({"error": "Unauthorized"}, status=401)
+
+        volunteer = get_object_or_404(VolunteerProfile, id=pk)
+
+        return Response({
+            "id": volunteer.id,
+            "name": volunteer.name,
+            "bio": volunteer.bio,
+            "image": volunteer.image.url if volunteer.image else None
+        })

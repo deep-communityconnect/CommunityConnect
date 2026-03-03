@@ -1,5 +1,5 @@
 
-# 🚀 Volunteer Platform API
+# Volunteer Platform API
 
 A role-based Volunteer Management Platform built with **Django** and **Django REST Framework**.
 
@@ -7,19 +7,18 @@ This platform allows:
 
 * Volunteers to explore opportunities and apply
 * Organizers to create opportunities and manage applications
-* Public blog publishing
-* Email notifications for key actions
-* Activity history tracking
+* Secure role-based access control
+* Profile management with image upload support
 
 ---
 
-## 🛠 Tech Stack
+## 🚀 Tech Stack
 
 * Python 3.11+
 * Django
 * Django REST Framework
-* drf-yasg (Swagger)
-* SQLite
+* drf-yasg (Swagger documentation)
+* SQLite / PostgreSQL (configurable)
 * Session-based authentication
 
 ---
@@ -28,58 +27,31 @@ This platform allows:
 
 ### 👤 Volunteer
 
-* View & update profile
-* Browse opportunity feed
-* Apply / withdraw applications
-* View application history
-* Add & delete feedback
-
----
+* View profile
+* Update profile (name, bio, image)
+* Browse opportunities feed
+* Apply for opportunities
+* View application history (latest first)
 
 ### 🏢 Organizer
 
-* View & update profile
-* Create & manage opportunities
-* View applications
-* Accept / reject applications
-* View application history
-
----
-
-### ✍️ Blogs
-
-* Organizers can create blogs
-* Public access (no login required)
-* Cover image support
-* Slug-based URLs
-* Reading time calculation
-* Pagination (blog list)
-
----
-
-### 📬 Email Notifications
-
-* Sent on:
-
-  * Registration
-  * Application status update
-  * Opportunity creation
-
----
-
-### 📜 History
-
-* Volunteer: applied opportunities
-* Organizer: received applications
+* View profile
+* Update profile (name, bio, image)
+* Create opportunities
+* View received applications
+* Update application status (accept/reject)
+* View full application history (latest first)
 
 ---
 
 ## 🔐 Security Measures
 
-* Role-based access control
-* Ownership validation
+* Role-based endpoint restriction
+* Ownership validation (organizers cannot edit other organizers’ data)
 * Duplicate application prevention
-* Safe object handling
+* Safe object fetching (no 500 crashes)
+* Ordered history by latest submission
+* Unique constraints where required
 
 ---
 
@@ -91,7 +63,6 @@ volunteer_platform/
 ├── authentication/
 ├── users/
 ├── organizers/
-├── blogs/
 ├── manage.py
 └── requirements.txt
 ```
@@ -100,24 +71,44 @@ volunteer_platform/
 
 ## ⚙️ Installation
 
+### 1️⃣ Clone the repository
+
 ```bash
 git clone https://github.com/Nilayjoshi/volunteer_platform.git
 cd volunteer_platform
+```
 
+### 2️⃣ Create virtual environment
+
+```bash
 python -m venv venv
-venv\Scripts\activate
+venv\Scripts\activate   # Windows
+```
 
+### 3️⃣ Install dependencies
+
+```bash
 pip install -r requirements.txt
+```
 
+### 4️⃣ Run migrations
+
+```bash
 python manage.py makemigrations
 python manage.py migrate
+```
 
+### 5️⃣ Run server
+
+```bash
 python manage.py runserver
 ```
 
 ---
 
 ## 📖 API Documentation
+
+Swagger UI available at:
 
 ```
 /swagger/
@@ -136,49 +127,18 @@ PUT    /users/profile/
 GET    /users/feed/
 POST   /users/{id}/apply/
 GET    /users/history/
-GET    /users/{id}/opportunity_detail/
-GET    /users/{id}/organization_detail/
-PATCH  /users/{id}/withdraw_application/
-POST   /users/{id}/add_feedback/
-DELETE /users/delete_feedback/{id}/
 ```
-
----
 
 ### Organizer
 
 ```
 POST   /organizers/create_opportunity/
-PUT    /organizers/{id}/update_opportunity/
-GET    /organizers/my_opportunities/
 GET    /organizers/pending_applications/
 PUT    /organizers/{id}/update_application/
 GET    /organizers/profile/
 PUT    /organizers/profile/
 GET    /organizers/history/
 GET    /organizers/{id}/view-volunteer/
-GET    /organizers/{id}/opportunity_detail/
-GET    /organizers/previous_opportunities/
-PATCH  /organizers/{id}/deactivate_opportunity/
-```
-
----
-
-### Blogs
-
-```
-GET    /blogs/list_blogs/
-GET    /blogs/detail/{slug}/
-POST   /blogs/create_blog/
-PUT    /blogs/{id}/update_blog/
-DELETE /blogs/{id}/delete_blog/
-GET    /blogs/my_blogs/
-```
-
-Pagination:
-
-```
-/blogs/list_blogs/?page=2
 ```
 
 ---
@@ -190,7 +150,6 @@ Pagination:
 * OrganizationProfile
 * Opportunity
 * Application
-* Blog
 
 ---
 
@@ -198,25 +157,19 @@ Pagination:
 
 1. Organizer creates opportunity
 2. Volunteer applies
-3. Organizer reviews
-4. Status updated
-5. History tracked
+3. Organizer reviews application
+4. Organizer updates status (accepted/rejected)
+5. Both can track history
 
 ---
 
-## 🛠 Admin Panel
+## 🛡️ Future Improvements
 
-```
-/admin/
-```
-
----
-
-## 🚀 Future Improvements
-
+* JWT Authentication
+* Pagination for feed & history
 * Search & filtering
-* Blog categories / tags
-* Comments on blogs
-* JWT authentication
+* Email notifications
+* Admin dashboard
+* Deployment setup (Docker / Render)
 
 ---

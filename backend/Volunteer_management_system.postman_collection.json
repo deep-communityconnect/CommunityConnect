@@ -268,7 +268,7 @@
           "formdata": [
             {
               "key": "email",
-              "value": "ccc@gmail.com",
+              "value": "aaa@gmail.com",
               "type": "text",
               "uuid": "c25bccac-7125-494b-971f-de299dc725a0"
             },
@@ -681,7 +681,7 @@
           "formdata": []
         },
         "url": {
-          "raw": "http://127.0.0.1:8000/organizers/applications/",
+          "raw": "http://127.0.0.1:8000/organizers/pending_applications/",
           "protocol": "http",
           "host": [
             "127",
@@ -692,7 +692,7 @@
           "port": "8000",
           "path": [
             "organizers",
-            "applications",
+            "pending_applications",
             ""
           ]
         }
@@ -903,20 +903,7 @@
         "header": [],
         "body": {
           "mode": "formdata",
-          "formdata": [
-            {
-              "key": "title",
-              "value": "Tree Plantation Drive",
-              "type": "text",
-              "uuid": "697100ab-0f06-40b2-b5d8-e3216828c045"
-            },
-            {
-              "key": "description",
-              "value": "Join us to plant 200 trees this Sunday in City Park.",
-              "type": "text",
-              "uuid": "163c23a3-af52-4a5b-86f8-e2fa89c46a97"
-            }
-          ]
+          "formdata": []
         },
         "url": {
           "raw": "http://127.0.0.1:8000/users/feed/",
@@ -943,20 +930,7 @@
             "header": [],
             "body": {
               "mode": "formdata",
-              "formdata": [
-                {
-                  "key": "title",
-                  "value": "Tree Plantation Drive",
-                  "type": "text",
-                  "uuid": "697100ab-0f06-40b2-b5d8-e3216828c045"
-                },
-                {
-                  "key": "description",
-                  "value": "Join us to plant 200 trees this Sunday in City Park.",
-                  "type": "text",
-                  "uuid": "163c23a3-af52-4a5b-86f8-e2fa89c46a97"
-                }
-              ]
+              "formdata": []
             },
             "url": {
               "raw": "http://127.0.0.1:8000/users/feed/",
@@ -1269,6 +1243,112 @@
       ]
     },
     {
+      "name": "user_history",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "method": "GET",
+        "header": [],
+        "body": {
+          "mode": "formdata",
+          "formdata": []
+        },
+        "url": {
+          "raw": "http://127.0.0.1:8000/users/history/",
+          "protocol": "http",
+          "host": [
+            "127",
+            "0",
+            "0",
+            "1"
+          ],
+          "port": "8000",
+          "path": [
+            "users",
+            "history",
+            ""
+          ]
+        }
+      },
+      "response": [
+        {
+          "name": "user_history",
+          "originalRequest": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "formdata",
+              "formdata": []
+            },
+            "url": {
+              "raw": "http://127.0.0.1:8000/users/history/",
+              "protocol": "http",
+              "host": [
+                "127",
+                "0",
+                "0",
+                "1"
+              ],
+              "port": "8000",
+              "path": [
+                "users",
+                "history",
+                ""
+              ]
+            }
+          },
+          "status": "OK",
+          "code": 200,
+          "_postman_previewlanguage": null,
+          "header": [
+            {
+              "key": "Date",
+              "value": "Sun, 15 Feb 2026 18:47:05 GMT"
+            },
+            {
+              "key": "Server",
+              "value": "WSGIServer/0.2 CPython/3.11.0"
+            },
+            {
+              "key": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "key": "Allow",
+              "value": "GET, HEAD, OPTIONS"
+            },
+            {
+              "key": "X-Frame-Options",
+              "value": "DENY"
+            },
+            {
+              "key": "Content-Length",
+              "value": "266"
+            },
+            {
+              "key": "Vary",
+              "value": "Cookie"
+            },
+            {
+              "key": "X-Content-Type-Options",
+              "value": "nosniff"
+            },
+            {
+              "key": "Referrer-Policy",
+              "value": "same-origin"
+            },
+            {
+              "key": "Cross-Origin-Opener-Policy",
+              "value": "same-origin"
+            }
+          ],
+          "cookie": [],
+          "body": "[\n    {\n        \"id\": 6,\n        \"opportunity\": \"Beach Cleanup Drive\",\n        \"organization\": \"Viraj\",\n        \"status\": \"pending\",\n        \"applied_at\": \"2026-02-15T18:46:51.134042Z\"\n    },\n    {\n        \"id\": 5,\n        \"opportunity\": \"Tree Plantation Drive\",\n        \"organization\": \"Darshan\",\n        \"status\": \"rejected\",\n        \"applied_at\": \"2026-02-15T18:43:12.018144Z\"\n    }\n]"
+        }
+      ]
+    },
+    {
       "name": "user_join_request",
       "request": {
         "method": "POST",
@@ -1480,7 +1560,7 @@
       ]
     },
     {
-      "name": "organizar_profile",
+      "name": "organizer_profile",
       "request": {
         "method": "PUT",
         "header": [],
@@ -1606,21 +1686,7 @@
         "header": [],
         "body": {
           "mode": "formdata",
-          "formdata": [
-            {
-              "key": "bio",
-              "value": "This website for for hardworking volunteers",
-              "type": "text",
-              "uuid": "8bbdac88-e06a-464e-a9c9-d1fb1074f8d8",
-              "disabled": true
-            },
-            {
-              "key": "image",
-              "type": "file",
-              "uuid": "71983a90-6a66-4ceb-bd3f-e009e672f130",
-              "src": "/C:/Django/toy_on_rent/media/media/profile_images/user2.jfif"
-            }
-          ]
+          "formdata": []
         },
         "url": {
           "raw": "http://127.0.0.1:8000/organizers/history/",
@@ -1647,21 +1713,7 @@
             "header": [],
             "body": {
               "mode": "formdata",
-              "formdata": [
-                {
-                  "key": "bio",
-                  "value": "This website for for hardworking volunteers",
-                  "type": "text",
-                  "uuid": "8bbdac88-e06a-464e-a9c9-d1fb1074f8d8",
-                  "disabled": true
-                },
-                {
-                  "key": "image",
-                  "type": "file",
-                  "uuid": "71983a90-6a66-4ceb-bd3f-e009e672f130",
-                  "src": "/C:/Django/toy_on_rent/media/media/profile_images/user2.jfif"
-                }
-              ]
+              "formdata": []
             },
             "url": {
               "raw": "http://127.0.0.1:8000/organizers/history/",
@@ -1731,7 +1783,7 @@
       ]
     },
     {
-      "name": "user_history",
+      "name": "organizer_view_volunteer",
       "protocolProfileBehavior": {
         "disableBodyPruning": true
       },
@@ -1740,24 +1792,10 @@
         "header": [],
         "body": {
           "mode": "formdata",
-          "formdata": [
-            {
-              "key": "bio",
-              "value": "This website for for hardworking volunteers",
-              "type": "text",
-              "uuid": "8bbdac88-e06a-464e-a9c9-d1fb1074f8d8",
-              "disabled": true
-            },
-            {
-              "key": "image",
-              "type": "file",
-              "uuid": "71983a90-6a66-4ceb-bd3f-e009e672f130",
-              "src": "/C:/Django/toy_on_rent/media/media/profile_images/user2.jfif"
-            }
-          ]
+          "formdata": []
         },
         "url": {
-          "raw": "http://127.0.0.1:8000/users/history/",
+          "raw": "http://127.0.0.1:8000/organizers/1/view-volunteer/",
           "protocol": "http",
           "host": [
             "127",
@@ -1767,38 +1805,25 @@
           ],
           "port": "8000",
           "path": [
-            "users",
-            "history",
+            "organizers",
+            "1",
+            "view-volunteer",
             ""
           ]
         }
       },
       "response": [
         {
-          "name": "user_history",
+          "name": "view_volunteer",
           "originalRequest": {
             "method": "GET",
             "header": [],
             "body": {
               "mode": "formdata",
-              "formdata": [
-                {
-                  "key": "bio",
-                  "value": "This website for for hardworking volunteers",
-                  "type": "text",
-                  "uuid": "8bbdac88-e06a-464e-a9c9-d1fb1074f8d8",
-                  "disabled": true
-                },
-                {
-                  "key": "image",
-                  "type": "file",
-                  "uuid": "71983a90-6a66-4ceb-bd3f-e009e672f130",
-                  "src": "/C:/Django/toy_on_rent/media/media/profile_images/user2.jfif"
-                }
-              ]
+              "formdata": []
             },
             "url": {
-              "raw": "http://127.0.0.1:8000/users/history/",
+              "raw": "http://127.0.0.1:8000/organizers/1/view-volunteer/",
               "protocol": "http",
               "host": [
                 "127",
@@ -1808,8 +1833,9 @@
               ],
               "port": "8000",
               "path": [
-                "users",
-                "history",
+                "organizers",
+                "1",
+                "view-volunteer",
                 ""
               ]
             }
@@ -1820,7 +1846,7 @@
           "header": [
             {
               "key": "Date",
-              "value": "Sun, 15 Feb 2026 18:47:05 GMT"
+              "value": "Sat, 21 Feb 2026 17:17:16 GMT"
             },
             {
               "key": "Server",
@@ -1840,7 +1866,7 @@
             },
             {
               "key": "Content-Length",
-              "value": "266"
+              "value": "91"
             },
             {
               "key": "Vary",
@@ -1860,7 +1886,7 @@
             }
           ],
           "cookie": [],
-          "body": "[\n    {\n        \"id\": 6,\n        \"opportunity\": \"Beach Cleanup Drive\",\n        \"organization\": \"Viraj\",\n        \"status\": \"pending\",\n        \"applied_at\": \"2026-02-15T18:46:51.134042Z\"\n    },\n    {\n        \"id\": 5,\n        \"opportunity\": \"Tree Plantation Drive\",\n        \"organization\": \"Darshan\",\n        \"status\": \"rejected\",\n        \"applied_at\": \"2026-02-15T18:43:12.018144Z\"\n    }\n]"
+          "body": "{\n    \"id\": 1,\n    \"name\": \"Nilay\",\n    \"bio\": \"Tree Plantation Drive\",\n    \"image\": \"/media/volunteer/avatar.png\"\n}"
         }
       ]
     }
