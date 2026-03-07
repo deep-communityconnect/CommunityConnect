@@ -12,6 +12,7 @@ class AuthUser(models.Model):
     password = models.CharField(max_length=255)
     role = models.CharField(max_length=20, choices=ROLE_CHOICES)
     created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     def set_password(self, raw_password):
         self.password = make_password(raw_password)
