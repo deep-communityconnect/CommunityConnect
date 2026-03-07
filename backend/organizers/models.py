@@ -1,5 +1,12 @@
 from django.db import models
 from authentication.models import AuthUser
+from django.core.validators import RegexValidator
+from django.core.exceptions import ValidationError
+
+phone_validator = RegexValidator(
+    regex=r'^\+?\d{10,15}$',
+    message="Enter a valid phone number (10-15 digits, optional +)."
+)
 
 class OrganizationProfile(models.Model):
     user = models.OneToOneField(AuthUser, on_delete=models.CASCADE)
@@ -10,6 +17,11 @@ class OrganizationProfile(models.Model):
         default='default/avatar.png',
         blank=True
     )
+    contact_email = models.EmailField(blank=True, null=True)
+    contact_phone = models.CharField(max_length=15, validators=[phone_validator], blank=True, null=True)
+    website = models.URLField(blank=True, null=True)
+    address = models.TextField(blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.name
@@ -19,6 +31,20 @@ class Opportunity(models.Model):
     title = models.CharField(max_length=200)
     description = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
+    location = models.CharField(max_length=255)
+    start_date = models.DateTimeField(auto_now_add=True)
+    end_date = models.DateTimeField(auto_now_add=True)
+    slots_available = models.PositiveIntegerField(default=0)
+    slots_filled = models.PositiveIntegerField(default=0)
+
+    def clean(self):
+        if self.start_date and self.end_date:
+            if self.end_date <= self.start_date:
+                raise ValidationError("End date must be after start date.")
+    
+    def save(self, *args, **kwargs):
+        self.full_clean()
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return f"{self.title} - {self.organization.name}"

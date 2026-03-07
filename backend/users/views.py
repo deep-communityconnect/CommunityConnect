@@ -37,9 +37,10 @@ class VolunteerViewSet(ViewSet):
             return Response({
                 "name": profile.name,
                 "bio": profile.bio,
-                "image": profile.image.url if profile.image else None
+                "image": profile.image.url if profile.image else None,
+                "phone": profile.phone,
+                "created_at": profile.created_at
             })
-
         serializer = VolunteerProfileSerializer(
             profile,
             data=request.data,
@@ -62,9 +63,13 @@ class VolunteerViewSet(ViewSet):
             "title": o.title,
             "description": o.description,
             "organization": o.organization.name,
-            "organization_image": (
-                o.organization.image.url if o.organization.image else None
-            )
+            "organization_image": o.organization.image.url if o.organization.image else None,
+            "location": o.location,
+            "start_date": o.start_date,
+            "end_date": o.end_date,
+            "slots_available": o.slots_available,
+            "slots_filled": o.slots_filled,
+            "created_at": o.created_at
         } for o in Opportunity.objects.all().order_by('-created_at')]
 
         return Response(data)
@@ -125,6 +130,7 @@ class VolunteerViewSet(ViewSet):
             "opportunity": app.opportunity.title,
             "organization": app.opportunity.organization.name,
             "status": app.status,
+            "location": app.opportunity.location,
             "applied_at": app.created_at
         } for app in applications]
 

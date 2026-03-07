@@ -59,7 +59,9 @@ class OrganizerViewSet(ViewSet):
             "id": a.id,
             "volunteer": a.volunteer.name,
             "opportunity": a.opportunity.title,
-            "status": a.status
+            "status": a.status,
+            "location": a.opportunity.location,
+            "applied_at": a.created_at
         } for a in apps]
 
         return Response(data)
@@ -92,7 +94,25 @@ class OrganizerViewSet(ViewSet):
             partial=True
         )
         serializer.is_valid(raise_exception=True)
+        if serializer.validated_data.get('status') == 'accepted':
+            if app.opportunity.slots_filled >= app.opportunity.slots_available:
+                return Response(
+                    {"error": "No slots available"},
+                    status=400
+                )
+        previous_status = app.status
         serializer.save()
+
+        # If changed to accepted
+        if previous_status != 'accepted' and app.status == 'accepted':
+            opportunity = app.opportunity
+            opportunity.slots_filled += 1
+            opportunity.save()
+        
+        if previous_status == 'accepted' and app.status != 'accepted':
+            opportunity = app.opportunity
+            opportunity.slots_filled -= 1
+            opportunity.save()
 
         return Response({"message": "Application updated"})
 
@@ -121,7 +141,12 @@ class OrganizerViewSet(ViewSet):
             return Response({
                 "name": org.name,
                 "bio": org.bio,
-                "image": org.image.url if org.image else None
+                "image": org.image.url if org.image else None,
+                "contact_email": org.contact_email,
+                "contact_phone": org.contact_phone,
+                "website": org.website,
+                "address": org.address,
+                "created_at": org.created_at
             })
 
         serializer = OrganizationProfileSerializer(
@@ -152,12 +177,13 @@ class OrganizerViewSet(ViewSet):
         ).order_by('-created_at')
 
         data = [{
-            "id": app.id,
-            "volunteer": app.volunteer.name,
-            "opportunity": app.opportunity.title,
-            "status": app.status,
-            "applied_at": app.created_at
-        } for app in applications]
+            "id": a.id,
+            "volunteer": a.volunteer.name,
+            "opportunity": a.opportunity.title,
+            "status": a.status,
+            "location": a.opportunity.location,
+            "applied_at": a.created_at
+        } for a in applications]
 
         return Response(data)
 
@@ -178,5 +204,7 @@ class OrganizerViewSet(ViewSet):
             "id": volunteer.id,
             "name": volunteer.name,
             "bio": volunteer.bio,
-            "image": volunteer.image.url if volunteer.image else None
+            "image": volunteer.image.url if volunteer.image else None,
+            "phone": volunteer.phone,
+            "created_at": volunteer.created_at
         })
