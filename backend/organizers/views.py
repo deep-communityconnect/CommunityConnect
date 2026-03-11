@@ -59,6 +59,7 @@ class OrganizerViewSet(ViewSet):
 
         data = [{
             "id": a.id,
+            "volunteer_id": a.volunteer.id, 
             "volunteer": a.volunteer.name,
             "opportunity": a.opportunity.title,
             "status": a.status,
@@ -183,6 +184,7 @@ class OrganizerViewSet(ViewSet):
 
         data = [{
             "id": a.id,
+            "volunteer_id": a.volunteer.id, 
             "volunteer": a.volunteer.name,
             "opportunity": a.opportunity.title,
             "status": a.status,
@@ -206,8 +208,9 @@ class OrganizerViewSet(ViewSet):
         volunteer = get_object_or_404(VolunteerProfile, id=pk)
 
         return Response({
-            "id": volunteer.id,
+            "id": volunteer.id, 
             "name": volunteer.name,
+            "email": volunteer.user.email,
             "bio": volunteer.bio,
             "image": volunteer.image.url if volunteer.image else None,
             "phone": volunteer.phone,
@@ -276,6 +279,40 @@ class OrganizerViewSet(ViewSet):
         } for o in opportunities]
 
         return Response(data)
+
+    @swagger_auto_schema(
+        method='get',
+        operation_summary="View Opportunity Detail",
+        operation_description="Organizer can view full details of their own opportunity."
+    )
+    @action(detail=True, methods=['get'])
+    def opportunity_detail(self, request, pk=None):
+
+        user = get_user(request)
+        if not user or user.role != 'organizer':
+            return Response({"error": "Unauthorized"}, status=401)
+
+        org = get_object_or_404(OrganizationProfile, user=user)
+
+        opportunity = Opportunity.objects.filter(
+            id=pk,
+            organization=org
+        ).first()
+
+        if not opportunity:
+            return Response({"error": "Not allowed"}, status=403)
+
+        return Response({
+            "id": opportunity.id,
+            "title": opportunity.title,
+            "description": opportunity.description,
+            "location": opportunity.location,
+            "start_date": opportunity.start_date,
+            "end_date": opportunity.end_date,
+            "total_slots": opportunity.total_slots,
+            "slots_filled": opportunity.slots_filled,
+            "created_at": opportunity.created_at
+        })
 
     @swagger_auto_schema(
         method='delete',
