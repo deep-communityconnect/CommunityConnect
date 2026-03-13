@@ -1,6 +1,6 @@
 import { AppBar, Toolbar, Typography, Button, Box, Drawer, List, ListItem, ListItemText, IconButton, useMediaQuery, useTheme } from "@mui/material";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback, memo } from "react";
 import axiosInstance from "../../api/axios";
 import { logoutUser } from "../../modules/authentication/services/authService";
 import logo from "../../assets/full_logo.png";
@@ -35,14 +35,14 @@ const Navbar = () => {
     checkSession();
   }, [navigate]);
 
-  const handleLogout = async () => {
+  const handleLogout = useCallback(async () => {
     await logoutUser();
     navigate("/login");
-  };
+  }, [navigate]);
 
-  const handleDrawerToggle = () => {
-    setMobileOpen(!mobileOpen);
-  };
+  const handleDrawerToggle = useCallback(() => {
+    setMobileOpen((prev) => !prev);
+  }, []);
 
   const drawerContent = (
     <Box sx={{ width: 250, pt: 2 }}>
@@ -245,4 +245,4 @@ const Navbar = () => {
   );
 };
 
-export default Navbar;
+export default memo(Navbar);
