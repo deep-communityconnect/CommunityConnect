@@ -8,9 +8,9 @@ class Blog(models.Model):
         on_delete=models.CASCADE,
         related_name="blogs"
     )
-    title = models.CharField(max_length=255)
+    title = models.CharField(max_length=255, blank=False)
     slug = models.SlugField(unique=True, blank=True, db_index=True)
-    content = models.TextField()
+    content = models.TextField(blank=False)
     cover_image = models.ImageField(
         upload_to="blog_covers/",
         null=True,
@@ -18,7 +18,7 @@ class Blog(models.Model):
     )
     excerpt = models.CharField(max_length=300, blank=True)
     reading_time = models.PositiveIntegerField(default=1)  # minutes
-    is_published = models.BooleanField(default=False)
+    is_published = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

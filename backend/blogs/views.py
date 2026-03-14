@@ -55,7 +55,7 @@ class BlogViewSet(ViewSet):
         org = get_object_or_404(OrganizationProfile, user=user)
         serializer = BlogSerializer(data=request.data)
         if serializer.is_valid():
-            serializer.save(organization=org)
+            serializer.save(organization=org, is_published=True)
             return Response(serializer.data)
         return Response(serializer.errors, status=400)
 
@@ -105,6 +105,6 @@ class BlogViewSet(ViewSet):
         if not user or user.role != "organizer":
             return Response({"error": "Unauthorized"}, status=401)
         org = get_object_or_404(OrganizationProfile, user=user)
-        blogs = Blog.objects.filter(organization=org)
+        blogs = Blog.objects.filter(organization=org, is_published=True).order_by("-created_at")
         serializer = BlogSerializer(blogs, many=True)
         return Response(serializer.data)
