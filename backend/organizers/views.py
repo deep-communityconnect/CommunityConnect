@@ -61,7 +61,7 @@ class OrganizerViewSet(ViewSet):
             opportunity__organization=org,
             status='pending',
             opportunity__end_date__gt=timezone.now()
-        ).order_by('-created_at')
+        ).select_related('volunteer', 'opportunity').order_by('-created_at')
 
         data = [{
             "id": a.id,
@@ -190,7 +190,7 @@ class OrganizerViewSet(ViewSet):
         opportunity__organization=org).exclude(
             status='pending',
             opportunity__end_date__gt=timezone.now()
-        ).order_by('-created_at')
+        ).select_related('volunteer', 'opportunity').order_by('-created_at')
 
         data = [{
             "id": a.id,
