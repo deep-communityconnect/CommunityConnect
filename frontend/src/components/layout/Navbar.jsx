@@ -1,7 +1,6 @@
 import { AppBar, Toolbar, Typography, Button, Box, Drawer, List, ListItem, ListItemText, IconButton, useMediaQuery, useTheme, Menu, MenuItem } from "@mui/material";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import axiosInstance from "../../api/axios";
 import { logoutUser } from "../../modules/authentication/services/authService";
 import logo from "../../assets/full_logo.png";
 import MenuIcon from "@mui/icons-material/Menu";
@@ -16,29 +15,32 @@ const Navbar = () => {
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
   useEffect(() => {
-    const checkSession = async () => {
-      try {
-        const res = await axiosInstance.get("auth/check_session/");
-        const userRole = res.data.role;
+    const token = localStorage.getItem("accessToken");
+    const userData = localStorage.getItem("userData");
 
+    if (token && userData) {
+      try {
+        const parsed = JSON.parse(userData);
+        const userRole = parsed.role;
         setRole(userRole);
 
         // Fix: redirect organizer if landed on volunteer page
         if (userRole === "organizer" && window.location.pathname === "/") {
           navigate("/org/opportunities");
         }
-
       } catch {
         setRole(null);
       }
-    };
-
-    checkSession();
+    } else {
+      setRole(null);
+    }
   }, [navigate]);
 
   const handleLogout = async () => {
     await logoutUser();
-    // Clear user data from localStorage
+    // Clear all JWT tokens and user data from localStorage
+    localStorage.removeItem("accessToken");
+    localStorage.removeItem("refreshToken");
     localStorage.removeItem("userData");
     navigate("/login");
   };

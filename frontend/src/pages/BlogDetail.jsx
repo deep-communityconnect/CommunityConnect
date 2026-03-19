@@ -37,6 +37,8 @@ const BlogDetail = () => {
 
     if (location.state?.from === "org") {
       navigate("/org/blogs");
+    } else if (location.state?.from === "volunteer") {
+      navigate("/volunteer-blogs");
     } else {
       navigate("/blogs");
     }

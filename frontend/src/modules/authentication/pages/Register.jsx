@@ -15,12 +15,12 @@ import { registerUser } from "../services/authService";
 import { useNavigate } from "react-router-dom";
 import { Link as RouterLink } from "react-router-dom";
 import { useEffect } from "react";
-import axiosInstance from "../../../api/axios";
 import { Snackbar, Alert } from "@mui/material";
 import PasswordField from "../../../components/common/PasswordField";
 import {
   VALIDATION_RULES,
   VALIDATION_MESSAGES,
+  getValidationMessage,
 } from "../../../constants/validationConstants";
 
 const Register = () => {
@@ -29,7 +29,6 @@ const Register = () => {
   const [formData, setFormData] = useState({
     email: "",
     password: "",
-    confirmPassword: "",
     role: "volunteer",
     name: "",
   });
@@ -45,13 +44,11 @@ const Register = () => {
   });
 
   useEffect(() => {
-    const checkAuth = async () => {
-      try {
-        await axiosInstance.get("auth/check_session/");
-        window.location.href = "/";
-      } catch {}
-    };
-    checkAuth();
+    // If already logged in, redirect
+    const token = localStorage.getItem("accessToken");
+    if (token) {
+      window.location.href = "/";
+    }
   }, []);
 
   const validateField = (name, value) => {
@@ -89,14 +86,6 @@ const Register = () => {
           errors.push(VALIDATION_MESSAGES.PASSWORD_TOO_SHORT);
         } else if (value.length > VALIDATION_RULES.PASSWORD.maxLength) {
           errors.push(VALIDATION_MESSAGES.PASSWORD_TOO_LONG);
-        }
-        break;
-
-      case "confirmPassword":
-        if (!value) {
-          errors.push("Please confirm your password");
-        } else if (value !== formData.password) {
-          errors.push("Passwords do not match");
         }
         break;
 
@@ -261,6 +250,7 @@ const Register = () => {
               error={touchedFields.email && fieldErrors.email?.length > 0}
               helperText={touchedFields.email && fieldErrors.email?.[0]}
             />
+
             <PasswordField
               label="Password"
               name="password"
@@ -271,18 +261,6 @@ const Register = () => {
               onBlur={handleBlur}
               error={touchedFields.password && fieldErrors.password?.length > 0}
               helperText={touchedFields.password && fieldErrors.password?.[0]}
-              showRequirements
-            />
-            <PasswordField
-              label="Confirm Password"
-              name="confirmPassword"
-              fullWidth
-              margin="normal"
-              value={formData.confirmPassword}
-              onChange={handleChange}
-              onBlur={handleBlur}
-              error={touchedFields.confirmPassword && fieldErrors.confirmPassword?.length > 0}
-              helperText={touchedFields.confirmPassword && fieldErrors.confirmPassword?.[0]}
               showRequirements
             />
 

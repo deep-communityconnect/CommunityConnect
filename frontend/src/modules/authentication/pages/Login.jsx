@@ -13,7 +13,6 @@ import { loginUser } from "../services/authService";
 import { useNavigate } from "react-router-dom";
 import { Link as RouterLink } from "react-router-dom";
 import { useEffect } from "react";
-import axiosInstance from "../../../api/axios";
 import { Snackbar, Alert } from "@mui/material";
 import PasswordField from "../../../components/common/PasswordField";
 import {
@@ -41,12 +40,12 @@ const Login = () => {
   });
 
   useEffect(() => {
-    const checkAuth = async () => {
-      try {
-        await axiosInstance.get("auth/check_session/");
-        window.location.href = "/home";
-      } catch {}
-    };
+    // If already logged in, redirect
+    const token = localStorage.getItem("accessToken");
+    if (token) {
+      window.location.href = "/home";
+      return;
+    }
 
     // Load saved credentials if remember me was checked
     const savedEmail = localStorage.getItem("rememberedEmail");
@@ -54,8 +53,6 @@ const Login = () => {
       setFormData(prev => ({ ...prev, email: savedEmail }));
       setRememberMe(true);
     }
-
-    checkAuth();
   }, []);
 
   const validateField = (name, value) => {
@@ -156,8 +153,11 @@ const Login = () => {
       const res = await loginUser(data);
 
       const role = res.data.role;
-      
-      localStorage.setItem("userData", JSON.stringify(res.data));
+
+      // Save JWT tokens
+      localStorage.setItem("accessToken", res.data.access);
+      localStorage.setItem("refreshToken", res.data.refresh);
+      localStorage.setItem("userData", JSON.stringify({ role: role }));
 
       if (role === "organizer") {
         navigate("/org/opportunities");

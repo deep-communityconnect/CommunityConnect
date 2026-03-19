@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
 import { useParams } from "react-router-dom";
+import axiosInstance from "../../../api/axios";
+import BASE_URL from "../../../config/config";
 
 import {
   Container,
@@ -18,10 +19,8 @@ function OrganizationDetail() {
   const [org, setOrg] = useState(null);
 
   useEffect(() => {
-    axios
-      .get(`https://volunteerconnect.pythonanywhere.com/users/${id}/organization_detail/`, {
-        withCredentials: true,
-      })
+    axiosInstance
+      .get(`users/${id}/organization_detail/`)
       .then((res) => setOrg(res.data));
   }, [id]);
 
@@ -37,7 +36,7 @@ function OrganizationDetail() {
 
             <Grid item>
               <Avatar
-                src={`https://volunteerconnect.pythonanywhere.com${org.image}`}
+                src={`${BASE_URL}${org.image}`}
                 sx={{ width: 90, height: 90 }}
               />
             </Grid>
