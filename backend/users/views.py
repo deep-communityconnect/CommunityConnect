@@ -61,6 +61,12 @@ class VolunteerViewSet(ViewSet):
         if not user or not user.is_authenticated or user.role != 'volunteer':
             return Response({"error": "Unauthorized"}, status=401)
         
+        category = request.query_params.get('category', None)
+        queryset = Opportunity.objects.filter(is_active=True, end_date__gte=timezone.now())
+        
+        if category:
+            queryset = queryset.filter(category__icontains=category)
+            
         data = [{
             "id": o.id,
             "title": o.title,
@@ -70,8 +76,9 @@ class VolunteerViewSet(ViewSet):
             "location": o.location,
             "start_date": o.start_date,
             "end_date": o.end_date,
-            "created_at": o.created_at
-        } for o in Opportunity.objects.filter(is_active=True, end_date__gte=timezone.now()).order_by('-created_at')]
+            "created_at": o.created_at,
+            "category": o.category
+        } for o in queryset.order_by('-created_at')]
 
         return Response(data)
 
@@ -139,6 +146,7 @@ class VolunteerViewSet(ViewSet):
             "organization": app.opportunity.organization.name,
             "status": app.status,
             "location": app.opportunity.location,
+            "category": app.opportunity.category,
             "applied_at": app.created_at
         } for app in applications]
 
@@ -188,6 +196,7 @@ class VolunteerViewSet(ViewSet):
             "total_slots": opportunity.total_slots,
             "created_at": opportunity.created_at,
             "slots_filled": opportunity.slots_filled,
+            "category": opportunity.category,
             "feedbacks": feedback_data
         }
 

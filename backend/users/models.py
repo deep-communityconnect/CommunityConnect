@@ -4,8 +4,8 @@ from authentication.models import AuthUser
 from django.core.validators import RegexValidator
 
 phone_validator = RegexValidator(
-    regex=r'^\+?\d{10,15}$',
-    message="Enter a valid phone number (10-15 digits, optional +)."
+    regex=r'^\+\d{1,3}-\d{10,15}$',
+    message="Enter a valid phone number (+CountryCode-Number, where number is 10-15 digits)."
 )
 
 class VolunteerProfile(models.Model):
@@ -17,7 +17,7 @@ class VolunteerProfile(models.Model):
         default='default/avatar.png',
         blank=True
     )
-    phone = models.CharField(max_length=15, validators=[phone_validator], blank=True, null=True)
+    phone = models.CharField(max_length=20, validators=[phone_validator], blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:

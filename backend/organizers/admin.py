@@ -8,9 +8,9 @@ class OrganizationProfileAdmin(admin.ModelAdmin):
 
 @admin.register(Opportunity)
 class OpportunityAdmin(admin.ModelAdmin):
-    list_display = ('id', 'title', 'organization', 'created_at')
-    search_fields = ('title',)
-    list_filter = ('organization',)
+    list_display = ('id', 'title', 'category', 'organization', 'created_at')
+    search_fields = ('title', 'category')
+    list_filter = ('organization', 'category')
 
 @admin.register(Application)
 class ApplicationAdmin(admin.ModelAdmin):

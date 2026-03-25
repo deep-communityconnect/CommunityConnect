@@ -70,6 +70,7 @@ class OrganizerViewSet(ViewSet):
             "opportunity": a.opportunity.title,
             "status": a.status,
             "location": a.opportunity.location,
+            "category": a.opportunity.category,
             "applied_at": a.created_at
         } for a in apps]
 
@@ -199,6 +200,7 @@ class OrganizerViewSet(ViewSet):
             "opportunity": a.opportunity.title,
             "status": a.status,
             "location": a.opportunity.location,
+            "category": a.opportunity.category,
             "end_date": a.opportunity.end_date,
             "applied_at": a.created_at
         } for a in applications]
@@ -288,6 +290,7 @@ class OrganizerViewSet(ViewSet):
             "end_date": o.end_date,
             "total_slots": o.total_slots,
             "slots_filled": o.slots_filled,
+            "category": o.category,
             "created_at": o.created_at
         } for o in opportunities]
 
@@ -349,6 +352,7 @@ class OrganizerViewSet(ViewSet):
             "end_date": opportunity.end_date,
             "total_slots": opportunity.total_slots,
             "slots_filled": opportunity.slots_filled,
+            "category": opportunity.category,
             "created_at": opportunity.created_at,
             "volunteers": volunteers,
             "feedbacks": feedback_list
@@ -410,6 +414,7 @@ class OrganizerViewSet(ViewSet):
             "start_date": o.start_date,
             "end_date": o.end_date,
             "is_active": o.is_active,
+            "category": o.category,
             "created_at": o.created_at
         } for o in opportunities]
 

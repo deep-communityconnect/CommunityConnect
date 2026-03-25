@@ -5,8 +5,8 @@ from django.core.exceptions import ValidationError
 from django.utils import timezone
 
 phone_validator = RegexValidator(
-    regex=r'^\+?\d{10,15}$',
-    message="Enter a valid phone number (10-15 digits, optional +)."
+    regex=r'^\+\d{1,3}-\d{10,15}$',
+    message="Enter a valid phone number (+CountryCode-Number, where number is 10-15 digits)."
 )
 
 class OrganizationProfile(models.Model):
@@ -19,7 +19,7 @@ class OrganizationProfile(models.Model):
         blank=True
     )
     contact_email = models.EmailField(blank=True, null=True)
-    contact_phone = models.CharField(max_length=15, validators=[phone_validator], blank=True, null=True)
+    contact_phone = models.CharField(max_length=20, validators=[phone_validator], blank=True, null=True)
     website = models.URLField(blank=True, null=True)
     address = models.TextField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -40,6 +40,7 @@ class Opportunity(models.Model):
     end_date = models.DateTimeField(default=timezone.now)
     total_slots = models.PositiveIntegerField(default=0)
     slots_filled = models.PositiveIntegerField(default=0)
+    category = models.CharField(max_length=100, blank=True, null=True)
     is_active = models.BooleanField(default=True)
 
     class Meta:
