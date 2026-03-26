@@ -15,7 +15,7 @@ import EventIcon from '@mui/icons-material/Event';
 import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 
-import community from '../assets/community.png';
+import community from '../assets/community_1.png';
 
 const features = [
   { icon: <VolunteerActivismIcon />, title: 'Meaningful Impact', description: 'Connect with causes that matter and make a real difference in your community.' },
@@ -306,7 +306,11 @@ const Landing = () => {
           <Typography variant="overline" sx={{ color: ORANGE, fontWeight: 700, letterSpacing: 2, fontSize: '0.7rem', mb: 1 }}>
             For Volunteers
           </Typography>
-          <Typography variant="h5" sx={{ fontWeight: 800, color: DARK, mb: 1.5, fontSize: { xs: '1.4rem', md: '1.6rem' } }}>
+          <Typography 
+            variant="h5" 
+            onClick={() => navigate('/register')}
+            sx={{ fontWeight: 800, color: DARK, mb: 1.5, fontSize: { xs: '1.4rem', md: '1.6rem' }, cursor: 'pointer', '&:hover': { color: ORANGE } }}
+          >
             Become a Volunteer
           </Typography>
           <Typography variant="body2" sx={{ color: '#555', lineHeight: 1.75, mb: 3, maxWidth: 340 }}>
@@ -347,7 +351,11 @@ const Landing = () => {
           <Typography variant="overline" sx={{ color: ORANGE, fontWeight: 700, letterSpacing: 2, fontSize: '0.7rem', mb: 1 }}>
             For Organisations
           </Typography>
-          <Typography variant="h5" sx={{ fontWeight: 800, color: DARK, mb: 1.5, fontSize: { xs: '1.4rem', md: '1.6rem' } }}>
+          <Typography 
+            variant="h5" 
+            onClick={() => navigate('/register')}
+            sx={{ fontWeight: 800, color: DARK, mb: 1.5, fontSize: { xs: '1.4rem', md: '1.6rem' }, cursor: 'pointer', '&:hover': { color: ORANGE } }}
+          >
             Post Opportunities
           </Typography>
           <Typography variant="body2" sx={{ color: '#555', lineHeight: 1.75, mb: 3, maxWidth: 340 }}>

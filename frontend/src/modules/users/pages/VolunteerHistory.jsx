@@ -42,6 +42,9 @@ const VolunteerHistory = () => {
 
   return (
     <Container maxWidth="md" sx={{ mt: 6 }}>
+      <Typography variant="h4" sx={{ mb: 4, fontWeight: "bold" }}>
+        My Application History
+      </Typography>
       {data.length === 0 ? (
         <Typography align="center" color="text.secondary">
           You haven’t applied to any opportunities yet.
