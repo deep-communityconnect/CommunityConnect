@@ -15,7 +15,7 @@ import EventIcon from '@mui/icons-material/Event';
 import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 
-import community from '../assets/community_1.png';
+import community from '../assets/community_1.jpeg';
 
 const features = [
   { icon: <VolunteerActivismIcon />, title: 'Meaningful Impact', description: 'Connect with causes that matter and make a real difference in your community.' },
